@@ -1,0 +1,26 @@
+$purple: #7A16FF;
+$lightPurple: #B47CFF;
+$darkPurple: #3F0093;
+$blue: #2626FF;
+$lightBlue: #8585FF;
+$darkBlue: #000098;
+$teal: #1097FF;
+$lightTeal: #79C5FF;
+$darkTeal: #004F8B;
+
+.log {
+  width: 49%;
+  background-color: $darkPurple !important;
+}
+
+.notFull {
+  padding: 200px 50px 0px 50px;
+}
+.welcome {
+  background-color: $darkPurple;
+  height: 350px;
+}
+.sign {
+  background-color: $darkBlue;
+  height: 350px;
+}
