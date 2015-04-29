@@ -1,0 +1,83 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TT2</title>
+    <link rel="stylesheet" href="stylesheets/app.css" />
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Slab:600' rel='stylesheet' type='text/css'>
+    <script src="bower_components/modernizr/modernizr.js"></script>
+  </head>
+  <body>
+
+    <div class="fullWidth header">
+      <div class="row">
+        <div class="medium-3 columns">
+          <h3>tt2</h3>
+        </div>
+        <div class="medium-6 columns">
+          <div class="linkWrapper"><span class="linkHolder"><a href="#" class="headerLink">Jobs</a></span></div>
+          <div class="linkWrapper"><span class="linkHolder"><a href="#" class="headerLink">About</a></span></div>
+          <div class="linkWrapper"><span class="linkHolder"><a href="#" class="headerLink">News</a></span></div>
+          <div class="linkWrapper"><span class="linkHolder"><a href="#" class="headerLink">FAQs</a></span></div>
+        </div>
+        <div class="medium-3 columns">
+          <select class="settings" id="settings">
+            <option selected disabled>{{username}}</option>
+            <option value="avatar">avatar</option>
+            <option value="profile">profile</option>
+            <option value="logOut">log out</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row lobbySection">
+      <div class="medium-8 columns roomSection">
+        <div class="row roomHeader">
+          <div class="medium-8 columns">
+            <div class="navLinkWrapper"><span class="navLinkHolder"><a href="#" class="navLink">All Rooms</a></span></div>
+            <div class="navLinkWrapper"><span class="navLinkHolder"><a href="#" class="navLink">DJ's Needed</a></span></div>
+            <div class="navLinkWrapper"><span class="navLinkHolder"><a href="#" class="navLink">Favorites</a></span></div>
+          </div>
+          <div class="medium-4 columns">
+            <div class="roomLinkWrapper"><span class="roomLinkHolder"><a href="/create" class="roomLink">Create New Room</a></span></div>
+          </div>
+          <div class="divider"></div>
+        </div>
+        {{#each info}}
+        <a href="/rooms/{{this.[4]}}" class="row wrapperLink roomListing">
+          <div class="medium-3 columns listenerCount">
+            <h3>{{this.[2]}}</h3><p>listeners</p>
+          </div>
+          <div class="medium-8 columns roomInfo">
+            <h4>{{this.[0]}}</h4><p>{{this.[3]}}</p><p>{{this.[1]}}</p>
+          </div>
+          <div class="medium-1 columns">
+            <img width="26" src="img/star.png" class="star">
+          </div>
+        </a>
+        {{/each}}
+      </div>
+      <div class="medium-3 columns accountSection">
+        <div class="row">
+          <div class="small-12 columns accountInfo">
+            <h2>DJ {{username}}</h2>
+            <p>8012 Points</p>
+            <p>211 Fans</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/foundation/js/foundation.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script type="text/javascript">
+    var socket = io();
+    </script>
+    <script src="js/app.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

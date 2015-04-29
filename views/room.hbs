@@ -1,0 +1,179 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TT2</title>
+    <link rel="stylesheet" href="../stylesheets/app.css" />
+    <link rel="stylesheet" href="../foundation-icons/foundation-icons.css" />
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Slab:600' rel='stylesheet' type='text/css'>
+    <script src="../bower_components/modernizr/modernizr.js"></script>
+  </head>
+  <body class="djRoom">
+    <div class="fullWidth header">
+      <div class="row">
+        <div class="medium-2 columns">
+          <h3>tt2</h3>
+        </div>
+        <div class="medium-1 columns">
+          <img src="../img/star.png" class="roomStar">
+        </div>
+        <div class="medium-6 columns end">
+          <p>{{info.[0]}}</p>
+          <p class="listeners" id="listenerCount">{{info.[2]}} listeners</p>
+        </div>
+        <div class="medium-3 columns">
+          <select class="settings" id="settings">
+            <option selected disabled>{{myInfo.[0]}}</option>
+            <option value="avatar">avatar</option>
+            <option value="profile">profile</option>
+            <option value="logOut">log out</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="roomContainer">
+      <div class="upperRoom">
+        <div class="djSpots">
+          <a id="dj0" class="djSpot" style="">
+          </a>
+          <a id="dj1" class="djSpot" style="">
+          </a>
+          <a id="dj2" class="djSpot" style="">
+          </a>
+          <a id="dj3" class="djSpot" style="">
+          </a>
+          <a id="dj4" class="djSpot" style="">
+          </a>
+        </div>
+        <div class="songInfo">
+          <h1 id="artistName">Trust</h1>
+          <h2 id="songName">Geryon</h2>
+        </div>
+      </div>
+      <div class="lowerRoom" id="lowerRoom">
+        <div data-uname="{{myInfo.[0]}}" id="{{myInfo.[4]}}" class="backAvatar avatar" style="background-image:url(../../img/{{myInfo.[3]}}Back.png);margin-top:{{myInfo.[2]}}px;margin-left:{{myInfo.[1]}}px;"></div>
+        {{#each listenerInfo}}
+          <div data-uname="{{this.[0]}}" id="{{this.[4]}}" class="backAvatar avatar" style="background-image:url(../../img/{{this.[3]}}Back.png);margin-top:{{this.[2]}}px;margin-left:{{this.[1]}}px;"></div>
+        {{/each}}
+      </div>
+    </div>
+    <div class="rightBar">
+      <div class="sideHead">
+        <a data-section='#chatSection' class="sideIconLink focus"><i class="fi-comment sideIcon" id="chat"></i></a>
+        <a data-section='#songSection' class="sideIconLink"><i class="fi-music sideIcon" id="music"></i></a>
+      </div>
+      <div class="sideBody">
+        <div class="sideSection" id="chatSection">
+          <div class="chatMessages" id="chatMessages">
+          </div>
+          <div class="chatSubmit">
+            <input placeholder="enter a message" type="text" id="roomMessage">
+          </div>
+        </div>
+        <div class="sideSection" id="songSection">
+          <a id="addSongLink"><i class="fi-plus" id="addSongIcon"></i>ADD SONG</a>
+          {{#each songs}}
+            <li class="songItem" data-songid="{{this.[0]}}" data-url="{{this.[3]}}"><h5>{{this.[1]}}</h5><p>{{this.[2]}}</p></li>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+    <div id="infoBox">
+      <p id="displayName">
+      </p>
+    </div>
+
+    <div class="addSong" id="songPop">
+      <form id="songForm">
+        <i class="fi-info" id="hintHelper"></i>
+        <div class="hint" id="idHint"><p>That little wiggly bit at the end of the youtube url:</p><p>https://www.youtube.com/watch?v=<em>xp0NOjZlNlo</em></p></div>
+        <input type="text" id="youUrl" placeholder="song id">
+        <input type="button" value="ADD SONG" onclick="submitSong()" class="button addButton">
+        <input type="button" value="CANCEL" onClick="closeSong()" class="button cancelButton">
+      </form>
+    </div>
+
+    <a id="stopDj" onclick="removeDj()">STOP DJING</a>
+
+    <div id="songPlayer">
+    </div>
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/foundation/js/foundation.min.js"></script>
+    <script src='/socket.io/socket.io.js'></script>
+    <script type="text/javascript">
+    var socket = io();
+    socket.emit('joinRoom', '{{info.[3]}}');
+    socket.emit('userJoined', {username: '{{myInfo.[0]}}', x: '{{myInfo.[1]}}', y: '{{myInfo.[2]}}', avatar: '{{myInfo.[3]}}', room: '{{info.[3]}}', ident: '{{myInfo.[4]}}' });
+
+    $("#roomMessage").keyup(function (e) {
+    if (e.keyCode == 13 && $("#roomMessage").val() != '') {
+        socket.emit('roomChat', {username: '{{myInfo.[0]}}', room: '{{info.[3]}}', message: $("#roomMessage").val()});
+        $("#roomMessage").val('');
+      }
+    });
+
+    $('.djSpot').click(function() {
+      if($(this).hasClass('addDj')) {
+        socket.emit("addDJ", {room: '{{info.[3]}}', username: '{{myInfo.[0]}}', ident: '{{myInfo.[4]}}', num: $(this).attr('id').charAt(2), avatar: '{{myInfo.[3]}}', song: $('.songItem:first > h5').text(), artist: $('.songItem:first > p').text(), url: $('.songItem:first').data('url'), songId: $('.songItem:first').data('songid')});
+        $(this).css('background-image', 'url("../img/laptop.png"), url("../img/{{myInfo.[3]}}Front.png")');
+        $(this).removeClass('addDj');
+        $(this).addClass('djPlaying');
+        $(this).addClass('avatar');
+        $(this).addClass('myDj');
+        $(this).data('uname', '{{myInfo.[0]}}');
+        $('#' + {{myInfo.[4]}}).remove();
+        $('#stopDj').show();
+      }
+    });
+
+    function removeDj() {
+      socket.emit('removeDj', {room: '{{info.[3]}}', username: '{{myInfo.[0]}}', ident: '{{myInfo.[4]}}', avatar: '{{myInfo.[3]}}', x: '{{myInfo.[1]}}', y: '{{myInfo.[2]}}'});
+      $('#stopDj').hide();
+    }
+
+    window.onbeforeunload = function() {
+      socket.emit('userLeft', {room: '{{info.[3]}}', ident: '{{myInfo.[4]}}'});
+      if($('#stopDj').is(":visible")) {
+        socket.emit('unloadDj', {room: '{{info.[3]}}', username: '{{myInfo.[0]}}', ident: '{{myInfo.[4]}}', avatar: '{{myInfo.[3]}}', x: '{{myInfo.[1]}}', y: '{{myInfo.[2]}}'});
+      }
+    }
+
+    $(document).ready(function() {
+      if('{{currentSong.song}}') {
+      }
+      else {
+        $('#songName').text('');
+        $('#artistName').text('No DJs');
+      }
+
+      var djCount = 0;
+      {{#each djInfo}}
+        $('#dj' + {{this.[3]}}).css('background-image', 'url("../img/laptop.png"), url("../img/{{this.[1]}}Front.png")');
+        $('#dj' + {{this.[3]}}).removeClass('addDj');
+        $('#dj' + {{this.[3]}}).addClass('djPlaying');
+        $('#dj' + {{this.[3]}}).addClass('avatar');
+        $("#dj" + {{this.[3]}}).attr('data-uname', '{{this.[0]}}');
+        djCount ++;
+      {{/each}}
+
+      if (djCount < 4) {
+        $('#dj' + djCount).addClass('addDj');
+      }
+    });
+
+    function submitSong() {
+      socket.emit('checkSong', {song: $('#youUrl').val(), ident: '{{myInfo.[4]}}'});
+    }
+
+    function submitSongInfo() {
+      socket.emit('submitSong', {song: $('#songForm').data('surl'), name: $('#songNameInput').val(), artist: $('#artistNameInput').val(), ident: '{{myInfo.[4]}}'});
+    }
+
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/main.js"></script>
+  </body>
+</html>

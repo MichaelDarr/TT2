@@ -1,0 +1,71 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TT2</title>
+    <link rel="stylesheet" href="stylesheets/app.css" />
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Slab:600' rel='stylesheet' type='text/css'>
+    <script src="bower_components/modernizr/modernizr.js"></script>
+  </head>
+  <body>
+
+    <div class="row">
+      <div class="medium-6 medium-offset-3 columns roomForm">
+        <h1 id="signHead">Create a room:</h1>
+        <form id="logForm">
+          <input type="text" id="roomName" placeholder="room name" required>
+          <input type="text" id="roomId" placeholder="room identifier" required>
+          <select form="logForm" id="roomGenre" class="bigSelect" required>
+            <option selected disabled>Genre</option>
+            <option value="alternative">Alternative</option>
+            <option value="ambient">Ambient</option>
+            <option value="asianpop">Asian Pop</option>
+            <option value="blues">Blues</option>
+            <option value="chillwave">Chill Wave</option>
+            <option value="classical">Classical</option>
+            <option value="dance">Dance</option>
+            <option value="electrionic">Electronic</option>
+            <option value="folk">Folk</option>
+            <option value="hiphop">Hip Hop</option>
+            <option value="indiepop">Indie Pop</option>
+            <option value="indierock">Indie Rock</option>
+            <option value="inspirational">Inspirational</option>
+            <option value="latin">Latin</option>
+            <option value="newage">New Age</option>
+            <option value="opera">Opera</option>
+            <option value="pop">Pop</option>
+            <option value="randb">R&B</option>
+            <option value="rap">Rap</option>
+            <option value="reggae">Reggae</option>
+            <option value="rock">Rock</option>
+            <option value="singersongwriter">Singer / Songwriter</option>
+            <option value="world">World</option>
+          </select>
+          <select form="logForm" id="roomDJNumber" class="bigSelect" required>
+            <option selected disabled>Number of DJ's</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <input type="button" value="CREATE ROOM" onclick="submitRoom()" class="button log left" id="createButton">
+          <input type="button" value="CANCEL" onclick="location.href = '/lobby';" class="button log right" id="cancelButton">
+          <h4 id="error"></h4>
+        </form>
+      </div>
+    </div>
+
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/foundation/js/foundation.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script type="text/javascript">
+    var socket = io();
+    </script>
+    <script src="js/app.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

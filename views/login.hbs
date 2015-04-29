@@ -1,0 +1,41 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TT2</title>
+    <link rel="stylesheet" href="stylesheets/app.css" />
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Slab:600' rel='stylesheet' type='text/css'>
+    <script src="bower_components/modernizr/modernizr.js"></script>
+  </head>
+  <body>
+
+    <div class="row notFull">
+      <div class="medium-8 columns welcome" id="mainBigBox">
+        <h1>TurnTable2</h1>
+        <p>the new way to listen to music with friends</p>
+      </div>
+      <div class="medium-4 columns sign" id="mainSmallBox">
+        <h1 id="signHead">Sign In</h1>
+        <form id="logForm">
+          <input type="text" id="username" placeholder="username" required>
+          <input type="password" id="password" placeholder="password" required>
+          <input type="button" value="LOG IN" onclick="login()" class="button log" id="logButton left">
+          <input type="button" value="JOIN" onclick="switchJoin()" class="button log" id="joinButton right">
+          <h4 id="error"></h4>
+        </form>
+      </div>
+    </div>
+
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/foundation/js/foundation.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script type="text/javascript">
+    var socket = io();
+    </script>
+    <script src="js/app.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

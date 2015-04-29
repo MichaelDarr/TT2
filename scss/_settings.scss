@@ -126,6 +126,15 @@ $include-html-global-classes: $include-html-classes;
   $vLightTeal: #A9DAFF;
   $lightTeal: #79C5FF;
   $darkTeal: #004F8B;
+  $vvLightGrey: #D9D9E0;
+  $vLightGrey: #9999AF;
+  $lightGrey: #7C7C88;
+  $grey: #8C8C94;
+  $darkGrey: #6A6A7B;
+  $vDarkGrey: #5B5B70;
+  $vvDarkGrey: #19191B;
+  $vvvDarkGrey: #161819;
+
 
 // We use these as default colors throughout
 // $primary-color: #008CBA;
@@ -136,8 +145,8 @@ $include-html-global-classes: $include-html-classes;
 // $info-color: #a0d3e8;
 
 // We use these to control various global styles
-  $body-bg: $purple;
-  $body-font-color: $teal;
+  $body-bg: $darkGrey;
+  $body-font-color: $vvvDarkGrey;
 // $body-font-family: $font-family-sans-serif;
 // $body-font-weight: $font-weight-normal;
 // $body-font-style: normal;
@@ -208,7 +217,7 @@ $include-html-global-classes: $include-html-classes;
 // $include-html-type-classes: $include-html-classes;
 
 // We use these to control header font styles
-  $header-font-family: 'Orbitron', sans-serif;
+  $header-font-family: 'Josefin Slab', serif;
 // $header-font-weight: $font-weight-normal;
 // $header-font-style: normal;
   $header-font-color: $lightTeal;
@@ -218,10 +227,10 @@ $include-html-global-classes: $include-html-classes;
 // $header-text-rendering: optimizeLegibility;
 
 // We use these to control header font sizes
-// $h1-font-size: rem-calc(44);
+   $h1-font-size: rem-calc(50);
 // $h2-font-size: rem-calc(37);
 // $h3-font-size: rem-calc(27);
-// $h4-font-size: rem-calc(23);
+// $h4-font-size: rem-calc(14);
 // $h5-font-size: rem-calc(18);
 // $h6-font-size: 1rem;
 
@@ -245,7 +254,7 @@ $include-html-global-classes: $include-html-classes;
 // $small-font-color: scale-color($header-font-color, $lightness: 35%);
 
 // We use these to style paragraphs
-  $paragraph-font-family: 'Josefin Slab', serif;
+  $paragraph-font-family: 'Montserrat', sans-serif;
 // $paragraph-font-weight: $font-weight-normal;
   $paragraph-font-size: 1.6rem;
 // $paragraph-line-height: 1.6;
@@ -268,8 +277,8 @@ $include-html-global-classes: $include-html-classes;
 // We use these to style anchors
 // $anchor-text-decoration: none;
 // $anchor-text-decoration-hover: none;
-// $anchor-font-color: $primary-color;
-// $anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
+  $anchor-font-color: $vvLightGrey;
+  $anchor-font-color-hover: $anchor-font-color;
 
 // We use these to style the <hr> element
 // $hr-border-width: 1px;
@@ -446,9 +455,9 @@ $include-html-global-classes: $include-html-classes;
 // $button-margin-bottom: rem-calc(20);
 
 // We use these to control button text styles.
-  $button-font-family: 'Josefin Slab', serif;
-  $button-font-color: $teal;
-  $button-font-color-alt: $lightTeal;
+  $button-font-family: 'Montserrat', sans-serif;
+  $button-font-color: $vvvDarkGrey;
+  $button-font-color-alt: $vDarkGrey;
 // $button-font-tny: rem-calc(11);
 // $button-font-sml: rem-calc(13);
 // $button-font-med: rem-calc(16);
@@ -462,8 +471,8 @@ $include-html-global-classes: $include-html-classes;
 // We use these to control button border styles.
 // $button-border-width: 0;
 // $button-border-style: solid;
-  $button-bg-color: $darkPurple;
-// $button-bg-hover: scale-color($button-bg-color, $lightness: $button-function-factor);
+  $button-bg-color: $grey;
+  $button-bg-hover: $lightGrey;
 // $button-border-color: $button-bg-hover;
 // $secondary-button-bg-hover: scale-color($secondary-color, $lightness: $button-function-factor);
 // $secondary-button-border-color: $secondary-button-bg-hover;
@@ -639,15 +648,15 @@ $include-html-global-classes: $include-html-classes;
 // $form-label-font-size: rem-calc(14);
   $form-label-font-weight: 700;
 // $form-label-line-height: 1.5;
-  $form-label-font-color: scale-color($darkTeal, $lightness: 30%);
+  $form-label-font-color: scale-color($vvvDarkGrey, $lightness: 30%);
 // $form-label-small-transform: capitalize;
 // $form-label-bottom-margin: 0;
-  $input-font-family: 'Josefin Slab', serif;
+  $input-font-family: 'Montserrat', sans-serif;
 // $input-font-color: rgba(0,0,0,0.75);
   $input-font-size: rem-calc(16);
-  $input-bg-color: $vLightTeal;
-  $input-focus-bg-color: scale-color($teal, $lightness: -2%);
-// $input-border-color: scale-color($white, $lightness: -20%);
+  $input-bg-color: $lightGrey;
+  $input-focus-bg-color: $vLightGrey;
+  $input-border-color: $grey;
 // $input-focus-border-color: scale-color($white, $lightness: -40%);
 // $input-border-style: solid;
 // $input-border-width: 1px;
@@ -696,7 +705,7 @@ $include-html-global-classes: $include-html-classes;
 // $glowing-effect-color: $input-focus-border-color;
 
 // Select variables
-// $select-bg-color: $ghost;
+  $select-bg-color: $vvLightGrey;
 // $select-hover-bg-color: scale-color($select-bg-color, $lightness: -3%);
 
 
