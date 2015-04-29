@@ -25,6 +25,69 @@ socket.on('removeDj', function (data) {
 	var addDjAdded = false;
 	for(; i < 5;) {
 		i = parseInt(i);
+		//if you are a dj
+		if($('#stopDj').is(":visible")) {
+			if($('#dj' + parseInt(i + 1)).length) {
+				if($('#dj' + parseInt(i + 1)).hasClass('avatar')) {
+					$('#dj' + i).attr('class', $('#dj' + parseInt(i + 1)).attr('class'));
+					$('#dj' + i).attr('style', $('#dj' + parseInt(i + 1)).attr('style'));
+					$('#dj' + i).data('uname', $('#dj' + parseInt(i + 1)).data('uname'));
+				}
+				else {
+					$('#dj' + i).attr('class', 'djSpot');
+					$('#dj' + i).attr('style', '');
+					$('#dj' + i).data('uname', '');
+				}
+			}
+			else {
+				$('#dj' + i).attr('class', 'djSpot');
+				$('#dj' + i).attr('style', '');
+				$('#dj' + i).data('uname', '');
+			}
+		}
+		//if you aren't
+		else {
+			if($('#dj' + parseInt(i + 1)).length) {
+				if($('#dj' + parseInt(i + 1)).hasClass('avatar')) {
+					$('#dj' + i).attr('class', $('#dj' + parseInt(i + 1)).attr('class'));
+					$('#dj' + i).attr('style', $('#dj' + parseInt(i + 1)).attr('style'));
+					$('#dj' + i).data('uname', $('#dj' + parseInt(i + 1)).data('uname'));
+				}
+				else if($('#dj' + parseInt(i + 1)).hasClass('addDj')) {
+					if (!$('#stopDj').is(":visible")) {
+						$('#dj' + i).attr('class', 'djSpot addDj');
+						$('#dj' + i).attr('style', '');
+						$('#dj' + i).data('uname', '');
+						addDjAdded = true;
+					}
+				}
+				else {
+					console.log('make this a regular spot');
+					$('#dj' + i).attr('class', 'djSpot');
+					$('#dj' + i).attr('style', '');
+					$('#dj' + i).data('uname', '');
+				}
+			}
+			else {
+				if(addDjAdded) {
+					$('#dj' + i).attr('class', 'djSpot');
+					$('#dj' + i).attr('style', '');
+					$('#dj' + i).data('uname', '');
+				}
+				else {
+					$('#dj' + i).attr('class', 'djSpot addDj');
+					$('#dj' + i).attr('style', '');
+					$('#dj' + i).data('uname', '');
+					addDjAdded = true;
+				}
+			}
+		}
+	i++;
+	}
+});
+
+/*
+		i = parseInt(i);
 		console.log(i);
 		if($('#dj' + parseInt(i + 1)).length) {
 			console.log('the next one exists')
@@ -66,8 +129,7 @@ socket.on('removeDj', function (data) {
 			$('#dj' + i).data('uname', '');
 		}
 		i++;
-	}
-})
+*/
 
 socket.on('songEmitComplete', function (data) {
 	if(data.result='success') {
