@@ -45,7 +45,6 @@ http.listen(80, function(){
 
 io.sockets.on('connection', function(socket) {
 	socket.on('removeDj', function(info) {
-		console.log('dj removed');
 		var djNum;
 		connection.query('SELECT status FROM users WHERE id="' + info.ident + '";', function(err, results, fields) {
 			if (err) throw err;
@@ -54,12 +53,12 @@ io.sockets.on('connection', function(socket) {
 				if (err) throw err;
 				info.djNumber = djNum;
 				io.to(info.room).emit('addUser', info);
-				io.to(info.room).emit('removeDj', info);
+				socket.broadcast.to(info.room).emit('removeDj', info);
+				socket.emit('removeMyDj', info);
 			});
 		});
   });
   socket.on('unloadDj', function(info) {
-		console.log('dj unloaded');
 		var djNum;
 		connection.query('SELECT status FROM users WHERE id="' + info.ident + '";', function(err, results, fields) {
 			if (err) throw err;

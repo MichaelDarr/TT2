@@ -19,6 +19,56 @@ $('#settings').change(function() {
 	}
 });
 
+socket.on('removeMyDj', function (data) {
+	var djNum = data.djNumber;
+	var i = djNum;
+	var addDjAdded = false;
+	for(; i < 5;) {
+		i = parseInt(i);
+		console.log(i);
+		if($('#dj' + parseInt(i + 1)).length) {
+			console.log('next one exists');
+			if($('#dj' + parseInt(i + 1)).hasClass('avatar')) {
+				console.log('next one is an avatar');
+				$('#dj' + i).attr('class', $('#dj' + parseInt(i + 1)).attr('class'));
+				$('#dj' + i).attr('style', $('#dj' + parseInt(i + 1)).attr('style'));
+				$('#dj' + i).data('uname', $('#dj' + parseInt(i + 1)).data('uname'));
+			}
+			else {
+				console.log('next one is a regular spot');
+				if(addDjAdded) {
+					$('#dj' + i).attr('class', 'djSpot');
+					$('#dj' + i).attr('style', '');
+					$('#dj' + i).data('uname', '');
+				}
+				else {
+					$('#dj' + i).attr('class', 'djSpot addDj');
+					$('#dj' + i).attr('style', '');
+					$('#dj' + i).data('uname', '');
+					addDjAdded = true;
+				}
+			}
+		}
+		else {
+			console.log('next one does not exist');
+			if(addDjAdded) {
+				console.log('must be a regular spot');
+				$('#dj' + i).attr('class', 'djSpot');
+				$('#dj' + i).attr('style', '');
+				$('#dj' + i).data('uname', '');
+			}
+			else {
+				console.log('must be an addDj');
+				$('#dj' + i).attr('class', 'djSpot addDj');
+				$('#dj' + i).attr('style', '');
+				$('#dj' + i).data('uname', '');
+				addDjAdded = true;
+			}
+		}
+	i++;
+	}
+});
+
 socket.on('removeDj', function (data) {
 	var djNum = data.djNumber;
 	var i = djNum;
@@ -47,34 +97,40 @@ socket.on('removeDj', function (data) {
 		}
 		//if you aren't
 		else {
+			console.log(i);
+			console.log('not a dj');
 			if($('#dj' + parseInt(i + 1)).length) {
+				console.log('next one exists');
 				if($('#dj' + parseInt(i + 1)).hasClass('avatar')) {
+					console.log('next one is an avatar');
 					$('#dj' + i).attr('class', $('#dj' + parseInt(i + 1)).attr('class'));
 					$('#dj' + i).attr('style', $('#dj' + parseInt(i + 1)).attr('style'));
 					$('#dj' + i).data('uname', $('#dj' + parseInt(i + 1)).data('uname'));
 				}
 				else if($('#dj' + parseInt(i + 1)).hasClass('addDj')) {
-					if (!$('#stopDj').is(":visible")) {
-						$('#dj' + i).attr('class', 'djSpot addDj');
-						$('#dj' + i).attr('style', '');
-						$('#dj' + i).data('uname', '');
-						addDjAdded = true;
-					}
+					console.log('next one is an addDj');
+					$('#dj' + i).attr('class', 'djSpot addDj');
+					$('#dj' + i).attr('style', '');
+					$('#dj' + i).data('uname', '');
+					addDjAdded = true;
 				}
 				else {
-					console.log('make this a regular spot');
+					console.log('next one is a regular spot');
 					$('#dj' + i).attr('class', 'djSpot');
 					$('#dj' + i).attr('style', '');
 					$('#dj' + i).data('uname', '');
 				}
 			}
 			else {
+				console.log('next one does not exist');
 				if(addDjAdded) {
+					console.log('must be a regular spot');
 					$('#dj' + i).attr('class', 'djSpot');
 					$('#dj' + i).attr('style', '');
 					$('#dj' + i).data('uname', '');
 				}
 				else {
+					console.log('must be an addDj');
 					$('#dj' + i).attr('class', 'djSpot addDj');
 					$('#dj' + i).attr('style', '');
 					$('#dj' + i).data('uname', '');
@@ -85,51 +141,6 @@ socket.on('removeDj', function (data) {
 	i++;
 	}
 });
-
-/*
-		i = parseInt(i);
-		console.log(i);
-		if($('#dj' + parseInt(i + 1)).length) {
-			console.log('the next one exists')
-			if($('#dj' + parseInt(i + 1)).hasClass('avatar')) {
-				console.log('and someone is there.');
-				$('#dj' + i).attr('class', $('#dj' + parseInt(i + 1)).attr('class'));
-				$('#dj' + i).attr('style', $('#dj' + parseInt(i + 1)).attr('style'));
-				$('#dj' + i).data('uname', $('#dj' + parseInt(i + 1)).data('uname'));
-			}
-			else if($('#dj' + parseInt(i + 1)).hasClass('addDj') || $('#dj' + i).hasClass('myDj')) {
-				if (!$('#stopDj').is(":visible")) {
-					console.log('and it is an add dj.')
-					$('#dj' + i).attr('class', 'djSpot addDj');
-					$('#dj' + i).attr('style', '');
-					$('#dj' + i).data('uname', '');
-					$('#dj' + parseInt(i + 1)).attr('class', 'djSpot');
-					$('#dj' + parseInt(i + 1)).attr('style', '');
-					$('#dj' + parseInt(i + 1)).data('uname', '');
-					addDjAdded = true;
-				}
-			}
-			else {
-				console.log('make this a regular spot');
-				$('#dj' + i).attr('class', 'djSpot');
-				$('#dj' + i).attr('style', '');
-				$('#dj' + i).data('uname', '');
-			}
-		}
-		else if($('#stopDj').is(":visible")) {
-			console.log('the next one does not exist and you are djing');
-			$('#dj' + i).attr('class', 'djSpot');
-			$('#dj' + i).attr('style', '');
-			$('#dj' + i).data('uname', '');
-		}
-		else if(!addDjAdded && !$('#stopDj').is(":visible")){
-			console.log('the next one, which has a length of ' + parseInt(i + 1) + ' does not exist, you are not djing, and you do not yet have an add dj');
-			$('#dj' + i).attr('class', 'djSpot addDj');
-			$('#dj' + i).attr('style', '');
-			$('#dj' + i).data('uname', '');
-		}
-		i++;
-*/
 
 socket.on('songEmitComplete', function (data) {
 	if(data.result='success') {
