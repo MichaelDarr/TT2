@@ -72,28 +72,24 @@ io.sockets.on('connection', function(socket) {
   });
 	socket.on('submitSong', function(info) {
 		var newSongId;
-		var songListString;
+		var poisition = 0;
 		connection.query('INSERT INTO songs (name, artist, url) VALUES ("' + info.name + '","' + info.artist + '","' + info.song + '");', function(err, results, fields) {
 			if (err) throw err;
 			newSongId = results.insertId;
 		});
-		connection.query('SELECT songList FROM users WHERE id="' + info.ident + '";', function(err, results, fields) {
-			if (err) throw err;
-			if (results[0].songList) {
-				songListString = results[0].songList + ',' + newSongId.toString();
-			}
-			else {
-				songListString = newSongId.toString();
-			}
-			connection.query('UPDATE users SET songList="' + songListString + '" WHERE id="' + info.ident + '";');
-			socket.emit('songEmitComplete', {result: 'success'});
-		});
+		connection.query('SELECT * FROM playlists WHERE userId=' + info.ident + ';', function(err, results, fields) {
+			position = results.length;
+			console.log(results.length);
+			connection.query('INSERT INTO playlists (userId, songId, priority) VALUES ("' + info.ident + '","' + newSongId + '","' + position + '");', function(err, results, fields) {
+				socket.emit('songEmitComplete', {result: 'success'});
+				console.log('inserted into playlists');
+			});
+		})
 	})
 	socket.on('checkSong', function(info) {
   	connection.query('SELECT * FROM songs WHERE url="' + info.song + '";', function(err, results, fields) {
   		if (results.length > 0) {
-  			connection.query('SELECT songList FROM users WHERE id="' + info.ident + '"', function(err, results, fields) {
-  			});
+  				
   		}
   		else {
   			request.get('https://www.youtube.com/watch?v=' + info.song, function(error, response, body){
@@ -208,7 +204,9 @@ app.get('/rooms/:name', function(req , res){
 			else {
 				currentSong = false;
 			}
-			connection.query('SELECT songList FROM users WHERE id="' + sess.ident + '";', function(err, results, fields) {
+			res.render('room.hbs', {info: roomInfo, myInfo: myInfo, listenerInfo: listenersInfo, djInfo: djsInfo, songs: null, currentSong: currentSong});
+			/*
+			connection.query('SELECT username, priority, description from songs join playlists on playlists.songId = songs.songId join users on playlists.userId = users.id WHERE id="' + sess.ident + '" ORDER BY Priority asc;', function(err, results, fields) {
 				if(results[0].songList) {
 					var songInfoArray = [];
 					var songArray = results[0].songList.split(',');
@@ -234,6 +232,7 @@ app.get('/rooms/:name', function(req , res){
 					res.render('room.hbs', {info: roomInfo, myInfo: myInfo, listenerInfo: listenersInfo, djInfo: djsInfo, songs: songInfoArray, currentSong: currentSong});
 				}
 			});
+			*/
 	  });
 	}
 	else {
