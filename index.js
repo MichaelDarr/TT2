@@ -79,10 +79,20 @@ io.sockets.on('connection', function(socket) {
 		});
 		connection.query('SELECT * FROM playlists WHERE userId=' + info.ident + ';', function(err, results, fields) {
 			position = results.length;
-			console.log(results.length);
 			connection.query('INSERT INTO playlists (userId, songId, priority) VALUES ("' + info.ident + '","' + newSongId + '","' + position + '");', function(err, results, fields) {
-				socket.emit('songEmitComplete', {result: 'success'});
-				console.log('inserted into playlists');
+				connection.query('SELECT songs.id, songs.name, songs.artist, songs.url, priority from songs join playlists on playlists.songId = songs.id join users on playlists.userId = users.id WHERE users.id="' + info.ident + '" ORDER BY Priority asc;', function(err, results, fields) {
+					if (err) throw err;
+					console.log(results);
+					var songInfoArray = [];
+					for (var i = 0; i < results.length; i++) {
+						songInfoArray[i] = [];
+						songInfoArray[i][0] = results[i].id;
+						songInfoArray[i][1] = results[i].name;
+						songInfoArray[i][2] = results[i].artist;
+						songInfoArray[i][3] = results[i].url;
+					}
+					socket.emit('songEmitComplete', {songs: songInfoArray});
+				});
 			});
 		})
 	})
@@ -204,35 +214,25 @@ app.get('/rooms/:name', function(req , res){
 			else {
 				currentSong = false;
 			}
-			res.render('room.hbs', {info: roomInfo, myInfo: myInfo, listenerInfo: listenersInfo, djInfo: djsInfo, songs: null, currentSong: currentSong});
-			/*
-			connection.query('SELECT username, priority, description from songs join playlists on playlists.songId = songs.songId join users on playlists.userId = users.id WHERE id="' + sess.ident + '" ORDER BY Priority asc;', function(err, results, fields) {
-				if(results[0].songList) {
+			connection.query('SELECT songs.id, songs.name, songs.artist, songs.url, priority from songs join playlists on playlists.songId = songs.id join users on playlists.userId = users.id WHERE users.id="' + sess.ident + '" ORDER BY Priority asc;', function(err, results, fields) {
+				if (err) throw err;
+				console.log(results);
+				if(results[0]) {
 					var songInfoArray = [];
-					var songArray = results[0].songList.split(',');
-					songArray = songArray.map(function(e) { return parseInt(e) });
-					for (var i = 0; i < songArray.length; i++) {
-						(function() {
-							var iN = i;
-							connection.query('SELECT * FROM songs WHERE id="' + songArray[iN] + '";', function(err1, results1, fields1) {
-								songInfoArray[iN] = [];
-								songInfoArray[iN][0] = songArray[iN];
-								songInfoArray[iN][1] = results1[0].name;
-								songInfoArray[iN][2] = results1[0].artist;
-								songInfoArray[iN][3] = results1[0].url;
-								if(iN == (songArray.length - 1)) {
-									res.render('room.hbs', {info: roomInfo, myInfo: myInfo, listenerInfo: listenersInfo, djInfo: djsInfo, songs: songInfoArray, currentSong: currentSong});
-								}
-							});
-						}());
+					for (var i = 0; i < results.length; i++) {
+						songInfoArray[i] = [];
+						songInfoArray[i][0] = results[i].id;
+						songInfoArray[i][1] = results[i].name;
+						songInfoArray[i][2] = results[i].artist;
+						songInfoArray[i][3] = results[i].url;
 					}
+					res.render('room.hbs', {info: roomInfo, myInfo: myInfo, listenerInfo: listenersInfo, djInfo: djsInfo, songs: songInfoArray, currentSong: currentSong});
 				}
 				else {
 					var songInfoArray = [];
 					res.render('room.hbs', {info: roomInfo, myInfo: myInfo, listenerInfo: listenersInfo, djInfo: djsInfo, songs: songInfoArray, currentSong: currentSong});
 				}
 			});
-			*/
 	  });
 	}
 	else {

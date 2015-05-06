@@ -2,6 +2,7 @@ var socket = io();
 
 var intval = null;
 var pos = 0;
+var beingDragged = false;
 
 $(document).ready(function() {
 	$('#mainBigBox').height($('#mainSmallBox').height() + 1);
@@ -16,6 +17,28 @@ $(document).ready(function() {
 $('#settings').change(function() {
 	if ($(this).val() == "logOut") {
 		window.location.href = "/logout";
+	}
+});
+
+$('.songItem').mousedown(function() {
+	$(this).hide();
+	beingDragged = true;
+	$('.draggable').html('<h5>' + $(this).find('h5').text() + '</h5><p></p>');
+	$('.draggable').show();
+}).bind('mouseup', function() {
+	$(this).show();
+	$(this).css('poisition', 'relative');
+	$('.draggable').hide();
+	beingDragged = false;
+});
+
+$(document).on('mousemove', function(e){
+	if(beingDragged) {
+		console.log(event.pageX);
+		$('.draggable').css({
+       left:  e.pageX,
+       top:   e.pageY
+    });
 	}
 });
 
@@ -143,10 +166,14 @@ socket.on('removeDj', function (data) {
 });
 
 socket.on('songEmitComplete', function (data) {
-	if(data.result='success') {
-		$('#songPop').html('<form id="songForm"><i class="fi-info" id="hintHelper"></i><div class="hint" id="idHint"><p>That little wiggly bit at the end of the youtube url:</p><p>https://www.youtube.com/watch?v=<em>xp0NOjZlNlo</em></p></div><input type="text" id="youUrl" placeholder="song id"><input type="button" value="ADD SONG" onclick="submitSong()" class="button addButton"><input type="button" value="CANCEL" onClick="closeSong()" class="button cancelButton"></form>');
-		$('#songPop').hide();
+	$('#songPop').html('<form id="songForm"><i class="fi-info" id="hintHelper"></i><div class="hint" id="idHint"><p>That little wiggly bit at the end of the youtube url:</p><p>https://www.youtube.com/watch?v=<em>xp0NOjZlNlo</em></p></div><input type="text" id="youUrl" placeholder="song id"><input type="button" value="ADD SONG" onclick="submitSong()" class="button addButton"><input type="button" value="CANCEL" onClick="closeSong()" class="button cancelButton"></form>');
+	$('#songPop').hide();
+	$('#songSection').html('<a id="addSongLink"><i class="fi-plus" id="addSongIcon"></i>ADD SONG</a><ul class="songList">');
+	console.log(data.songs)
+	for (var i = 0; i < data.songs.length; i++) {
+		$('#songSection').append('<li class="songItem" data-songid="' + data.songs[i][0] + '" data-url="' + data.songs[i][3] + '"><h5>' + data.songs[i][1] + '</h5><p>' + data.songs[i][2] + '</p></li>');
 	}
+	$('#songSection').append('</ul>');
 });
 socket.on('checkSong', function (data) {
 	if (data.result == 'nExist') {

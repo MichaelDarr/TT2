@@ -25,6 +25,7 @@ body {
 	height: 100vh;
 	overflow: hidden;
 }
+
 .djRoom {
 	background-image: url(../img/bonfire.png) !important;
 }
@@ -59,6 +60,10 @@ span.navLinkHolder:hover {
 span.roomLinkHolder:hover {
 	width: 190px;
 	border-bottom: 1px solid $lightTeal;
+}
+.draggable {
+	display: none;
+	position: absolute;
 }
 .addSong {
 	position: fixed;
@@ -176,6 +181,9 @@ span.roomLinkHolder:hover {
 		}
 		#songSection {
 			display: none;
+			.songList {
+				margin: 0;
+			}
 			a {
 				display: inline-block;
 				width: 100%;
@@ -188,13 +196,13 @@ span.roomLinkHolder:hover {
 			li {
 				h5 {
 					color: black;
-					font-size: 1em;
+					font-size: .5em;
 					font-family: montserrat, sans-serrif;
 					font-weight: 700;
 					margin: 0;
 				}
 				p {
-					font-size: 1em;
+					font-size: .5em;
 					margin-bottom: 0;
 				}
 				list-style: none;
